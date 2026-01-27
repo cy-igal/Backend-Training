@@ -22,16 +22,33 @@ export interface Passport {
   readonly fetchedAt: string; // ISO string
 }
 
+/**
+ * Enum for match failure reasons
+ */
+export enum MatchFailureReason { 
+  NO_MATCHING_MOVE = "NO_MATCHING_MOVE",
+  NO_MATCHING_TYPE = "NO_MATCHING_TYPE"
+}
+
+/**
+ * Enum for kind
+ */
+export enum CriteriaResultKind {
+  MATCHED = "matched",
+  NOT_MATCHED = "not_matched"
+}
+
+
 /** Criteria evaluation result (discriminated union). */
 export type CriteriaResult =
   | {
-      readonly kind: "matched";
+      readonly kind: CriteriaResultKind.MATCHED;
       readonly matchedTypes: readonly string[];
       readonly matchedMoves: readonly string[];
     }
   | {
-      readonly kind: "not_matched";
-      readonly reason: "NO_MATCHING_TYPE" | "NO_MATCHING_MOVE";
+      readonly kind: CriteriaResultKind.NOT_MATCHED;
+      readonly reason: MatchFailureReason
     };
 
 /** Per-item processing result (discriminated union). */
