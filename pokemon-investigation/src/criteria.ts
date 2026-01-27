@@ -1,4 +1,4 @@
-import { CriteriaResult, PokemonDto } from "./contracts";
+import { CriteriaResult, CriteriaResultKind, MatchFailureReason, PokemonDto } from "./contracts.js";
 
 /**
  * Matching criteria configuartion.
@@ -12,6 +12,24 @@ const CRITERIA = {
 } as const;
 
 
+// Type helpers for type-safe filtering
+type MatchingType = (typeof CRITERIA.types)[number]
+type MatchingMove = (typeof CRITERIA.moves)[number]
+
+
+/**
+ * Type guard to check if a string is a matching type.
+ */
+function isMatchingType(type: string) : type is MatchingType {
+    return (CRITERIA.types as readonly string[]).includes(type);
+}
+
+/**
+ * Type guard to check if a string is a matching move.
+ */
+function isMatchingMove(move: string) : move is MatchingMove {
+    return (CRITERIA.moves as readonly string[]).includes(move);
+}
 
 /**
  * Evaluates whether a Pokemon meets the matching criteria.
@@ -47,32 +65,32 @@ export function evaluateCriteria(pokemon:PokemonDto): CriteriaResult {
     const normalizedMoves = pokemon.moves.map((t) => t.toLowerCase());
 
     // Find all matching types from the criteria
-    const matchedTypes = normalizedTypes.filter((t) => CRITERIA.types.includes(t as any));
+    const matchedTypes = normalizedTypes.filter(isMatchingType);
 
     //Must have atleast one matching types
     if(matchedTypes.length == 0){
         return {
-            kind : "not_matched",
-            reason: "NO_MATCHING_TYPE",
+            kind : CriteriaResultKind.NOT_MATCHED,
+            reason: MatchFailureReason.NO_MATCHING_TYPE,
         }
     }
 
 
     // Find all matching moves from the criteria
-    const matchedMoves = normalizedMoves.filter((m) => CRITERIA.moves.includes(m as any));
+    const matchedMoves = normalizedMoves.filter(isMatchingMove);
 
-    //Must have atleast one matching movbes
+    //Must have atleast one matching moves
     if(matchedMoves.length == 0){
         return {
-            kind : "not_matched",
-            reason: "NO_MATCHING_MOVE",
+            kind : CriteriaResultKind.NOT_MATCHED,
+            reason: MatchFailureReason.NO_MATCHING_MOVE,
         }
     }
 
 
     //Both criteria met - return matches result with details
     return {
-        kind: "matched",
+        kind: CriteriaResultKind.MATCHED,
         matchedMoves,
         matchedTypes
     };
