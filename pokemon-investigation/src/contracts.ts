@@ -105,3 +105,11 @@ export interface PokemonSource {
 export interface InvestigationRunner {
   run(config: RunConfig): Promise<RunOutput>;
 }
+
+export interface CliArgs {
+  inputPath: string;
+  concurrency: number;
+  timeoutMs: number;
+  retries: number;
+  minMatches: number;
+}
