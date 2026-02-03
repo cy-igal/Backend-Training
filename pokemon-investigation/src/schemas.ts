@@ -69,6 +69,9 @@ export const RunConfigSchema = z.object({
                 .int()
                 .min(1, "Minimum matches must be at least 1")
                 .default(10)
+}).refine((data) => data.minMatches <= data.names.length,{
+    message: "minMatches cannot exceed the number of Pokemon names provided",
+    path: ["minMatches"]
 });
 
 
