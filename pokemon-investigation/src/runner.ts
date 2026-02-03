@@ -5,6 +5,66 @@ import { evaluateCriteria } from "./criteria.js";
 
 
 /**
+ * Type guard to check if an object has a specific property.
+ * 
+ * @param obj  - The object to check
+ * @param key  - The property key to look for 
+ * @returns true of the object has the property
+ */
+function hasProperty<K extends string>(obj: unknown, key: K) : obj is Record<K , unknown>  {
+    return typeof obj === "object" && obj !== null && key in obj;
+}
+
+/**
+ * Serializes an error cause for JSON output.
+ * Extracts key properties from Error objects for proper JSON serialization.
+ * 
+ * 
+ * @param cause - The error cause to serialize
+ * @returns A JSON-serializable representation of the cause
+ */
+function serializeErrorCause(cause: unknown) : unknown {
+
+    // If cause is not an Error , return as-is (already serializable)
+    if(!(cause instanceof Error)){
+        return cause;
+    }
+
+    //Base error properties (guarenteed to exist on Error)
+    const serialized: Record<string, unknown> = {
+        name: cause.name,
+        message: cause.message,
+        stack: cause.stack
+    };
+
+    if(hasProperty(cause, "code") && typeof cause.code === "string"){
+        serialized.code = cause.code;
+    }
+
+    if(hasProperty(cause, "status") && typeof cause.status === "number"){
+        serialized.status = cause.status;
+    }
+
+    // Handle response object (AxiosError specific)
+    if(hasProperty(cause, "response")){
+        const response = cause.response;
+
+        // Ensure response is an object before accessing properties
+        if(typeof response === "object" && response !== null){
+            serialized.response = {
+                status: hasProperty(response , "status") ? response.status : undefined,
+                statusText: hasProperty(response, "statusText") ? response.statusText : undefined,
+                data: hasProperty(response, "data") ? response.data : undefined
+            }
+        }
+    }
+
+    return serialized;
+}
+
+
+
+/**
  * Implementation of the main investigation runner.
  * Processes Pokemon with bounded concurrency and early termination. 
  * 
@@ -57,11 +117,14 @@ export class PokemonInvestigationRunner implements InvestigationRunner {
             if(result.kind === "success"){
                 passports.push(result.passport);
             } else {
+               // Extract and serialize error cause for JSON output
+               const serializedCause = hasProperty(result.error, "cause") ? serializeErrorCause(result.error.cause) : undefined;
+                  
                 failures.push({
                     name: result.name,
                     attempts: result.attempts,
                     message: result.error.message,
-                    cause: result.error.cause,
+                    cause: serializedCause,
                 });
             }
         }
@@ -123,6 +186,7 @@ export class PokemonInvestigationRunner implements InvestigationRunner {
             const batchPromises = batch.map((name) => 
                 this.processOne(name , timeoutMs, retries, runId)
             );
+            
 
             // Wait for all items in this batch to complete
             const batchResults = await Promise.all(batchPromises);

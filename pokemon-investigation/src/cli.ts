@@ -162,6 +162,16 @@ async function main(): Promise<void> {
 
         const config: RunConfig = configValidation.data;
 
+        if(config.concurrency > config.names.length){
+            console.log(`Note: Concurrency (${config.concurrency}) is higher than number of names (${config.names.length})`);
+            console.log(`All ${config.names.length} names will be processed in a single batch.\n`);
+        }
+
+        if(config.minMatches > config.names.length / 2){
+            console.log( `Note: minMatches (${config.minMatches}) is high relative to total names (${config.names.length})`);
+            console.log(`May process most/all Pokemon before reaching target.\n`);
+        }
+
         //Display configuration
         console.log("Configuration:");
         console.log(`Concurrency: ${config.concurrency}`);
