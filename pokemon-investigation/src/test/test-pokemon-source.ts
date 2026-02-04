@@ -1,4 +1,4 @@
-import { PokemonApiSource } from "./pokemon-source.js";
+import { PokemonApiSource } from "../pokemon-source.js";
 
 
 

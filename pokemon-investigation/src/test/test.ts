@@ -1,4 +1,4 @@
-import { InputFileSchema, PokemonApiResponseSchema, RunConfigSchema } from "./schemas.js";
+import { InputFileSchema, PokemonApiResponseSchema, RunConfigSchema } from "../schemas.js";
 
 
 /**
