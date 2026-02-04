@@ -1,6 +1,6 @@
-import { RunConfig } from "./contracts.js";
-import { PokemonApiSource } from "./pokemon-source.js";
-import { PokemonInvestigationRunner } from "./runner.js";
+import { RunConfig } from "../contracts.js";
+import { PokemonApiSource } from "../pokemon-source.js";
+import { PokemonInvestigationRunner } from "../runner.js";
 
 async function testRunner() {
   const source = new PokemonApiSource();

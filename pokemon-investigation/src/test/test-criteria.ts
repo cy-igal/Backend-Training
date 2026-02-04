@@ -1,5 +1,5 @@
-import { PokemonDto } from "./contracts.js";
-import { evaluateCriteria } from "./criteria.js";
+import { PokemonDto } from "../contracts.js";
+import { evaluateCriteria } from "../criteria.js";
 
 
 
