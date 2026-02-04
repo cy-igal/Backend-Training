@@ -25,9 +25,9 @@ This is a training project. Follow the guidelines in the assignment PDF for subm
 
 ### 1. Install Dependencies
 
-\```bash
+```bash
 npm install
-\```
+```
 
 ### 2. Setup Input File
 
@@ -35,21 +35,21 @@ Place the provided `pokemon.input.json` in the root directory, or use the `--inp
 
 ### 3. Build the Project
 
-\```bash
+```bash
 npm run build
-\```
+```
 
 ### 4. Run the CLI
 
-\```bash
+```bash
 npm start
-\```
+```
 
 Or with custom options:
 
-\```bash
+```bash
 npm start -- --input ./pokemon.input.json --concurrency 10 --min-matches 15
-\```
+```
 
 
 ## 🎯 CLI Options
@@ -74,7 +74,7 @@ The CLI generates three JSON files in the root directory:
 
 ## 🏗️ Project Structure
 
-\```
+```
 pokemon-investigation/
 ├── src/
 │   ├── test/               # Files related to unit testing testing
@@ -89,7 +89,7 @@ pokemon-investigation/
 ├── package.json
 ├── tsconfig.json
 └── README.md
-\```
+```
 
 
 ## 🎓 Key Design Features
@@ -138,24 +138,24 @@ A Pokemon matches if it has:
 ## 🧪 Example Usage
 
 ### Basic Run
-\```bash
+```bash
 npm start
-\```
+```
 
 ### Custom Configuration
-\```bash
+```bash
 npm start -- -i ./custom-input.json -c 15 -m 20 -t 45000 -r 3
-\```
+```
 
 ### Dev Mode (without building)
-\```bash
+```bash
 npm run dev -- --input ./pokemon.input.json
-\```
+```
 
 ## 📝 Example Output
 
 ### output.summary.json
-\```json
+```json
 {
   "runId": "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8",
   "processed": 25,
@@ -163,10 +163,10 @@ npm run dev -- --input ./pokemon.input.json
   "failed": 15,
   "durationMs": 12543
 }
-\```
+```
 
 ### output.passports.json
-\```json
+```json
 [
   {
     "runId": "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8",
@@ -179,10 +179,10 @@ npm run dev -- --input ./pokemon.input.json
     "fetchedAt": "2026-02-04T14:30:45.123Z"
   }
 ]
-\```
+```
 
 ### output.failures.json
-\```json
+```json
 [
   {
     "name": "InvalidName",
@@ -191,43 +191,43 @@ npm run dev -- --input ./pokemon.input.json
     "cause": { "...": "..." }
   }
 ]
-\```
+```
 
 ## 🐛 Troubleshooting
 
 ### "Cannot find module" errors
 Make sure you've built the project:
-\```bash
+```bash
 npm run build
-\```
+```
 
 ### TypeScript errors
 Ensure you're using Node 20+ and have installed dependencies:
-\```bash
+```bash
 node --version  # Should be 20.x or higher
 npm install
-\```
+```
 
 ### Input file not found
 Specify the correct path:
-\```bash
+```bash
 npm start -- --input ./path/to/pokemon.input.json
-\```
+```
 
 
 ## 📚 Unit Testing
 
 Make sure you've built the project:
-\```bash
+```bash
 npm run build
-\```
+```
 
 After running build command dist folder will get created
 
 ### Run test file
-\```bash
+```bash
 node dist/test/TEST_FILE_NAME.js
-\```
+```
 
 ## 📚 Additional Notes
 
